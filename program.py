@@ -18,6 +18,7 @@ class Human:
         self.health -= damage_taken
         print(f"{self.name} has taken {damage_taken} damage")
         print(f"{self.name} health is now {self.health}")
+        print("")
 
 class Elf(Human):
     def __init__(self, name = "Solana", damage = 85, health = 100):
@@ -36,11 +37,13 @@ class Dragon(Human):
         super().__init__(name, damage, health)
 
 class Game:
-    def __init__(self, game_over = False, state_one_over = False, chosen_class = None, enemy = Dragon()):
+    def __init__(self, game_over = False, state_one_over = False, chosen_class = None, enemy = Dragon(), attack_first = None, winner = None):
         self.game_over = game_over
         self.state_one_over = state_one_over
         self.chosen_class = chosen_class
         self.enemy = enemy
+        self.attack_first = attack_first
+        self.winner = winner
 
     def display_options(self):
         print("Welcome to Battle Game")
@@ -131,6 +134,7 @@ class Game:
         print(f"You will now fight the dragon {self.enemy.name}!")
         print("A coin will now be flipped to determine who goes first!")
         print(f"Heads means you go first. Tails means {self.enemy.name} goes first.")
+        print("(You get to go twice in a row if the coin lands in your favor)")
         print("")
         print("Coin Flipping...")
 
@@ -140,8 +144,12 @@ class Game:
 
         if coin_result == "Heads":
             print("You are attacking first!")
+            print("")
+            self.attack_first = "player"
         if coin_result == "Tails":
             print(f"{self.enemy.name} is attacking first!")
+            print("")
+            self.attack_first = "enemy"
 
     def game_setup(self):
         while not self.state_one_over:
@@ -151,16 +159,51 @@ class Game:
     def state_transition(self):
         self.coin_flip()
 
+    def enemy_turn(self):
+        print(f"{self.enemy.name} is attacking!")
+        self.enemy.attack()
+        self.chosen_class.take_damage(self.enemy.damage)
+
+    def player_turn(self):
+        valid_choice = False
+
+        while not valid_choice:
+            player_attack = input("Type 'attack' to perform your attack: ").lower()
+
+            if player_attack == "attack":
+                self.chosen_class.attack()
+                self.enemy.take_damage(self.chosen_class.damage)
+                valid_choice = True
+            else:
+                print("Invalid choice. Try again.")
+ 
     def play_game(self):
-        print("")
+        if self.attack_first == "player":
+            self.player_turn()
+        elif self.attack_first == "enemy":
+            self.enemy_turn()
+
+        while not self.game_over:
+            self.player_turn()
+            self.enemy_turn()
+
+            if self.chosen_class.health <= 0:
+                self.game_over = True
+                self.winner = "enemy"
+            elif self.enemy.health <= 0:
+                self.game_over = True
+                self.winner = "player"
 
 def run():
     game_obj = Game()
     game_obj.game_setup()
     game_obj.state_transition()
 
-    while not game_obj.game_over:
-        game_obj.play_game()
-        game_obj.game_over = True
+    game_obj.play_game()
+
+    if game_obj.winner == "player":
+        print("You WIN!")
+    elif game_obj.winner == "enemy":
+        print("You LOSE")
 
 run()
