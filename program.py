@@ -33,25 +33,24 @@ class Dragon(Human):
         super().__init__(name, damage, health)
 
 class Game:
-    def __init__(self, game_over = False, state_one_over = False, chosen_class = None):
+    def __init__(self, game_over = False, chosen_class = None):
         self.game_over = game_over
-        self.state_one_over = state_one_over
         self.chosen_class = chosen_class
 
-    def game_setup(self):
+    def display_options(self):
+        print("")
+        print("Please select your class to start")
+        print("1)   Human")
+        print("2)   Elf")
+        print("3)   Orc")
+        print("4)   Wizard")
+        print("5    Exit")
+
+    def make_choice(self):
         valid_choice = False
-        print("Welcome to Battle Game")
-
+        class_input = input("Enter the number or name of a class to make your choice: ").lower()
+    
         while not valid_choice:
-            print("")
-            print("Please select your class to start")
-            print("1)   Human")
-            print("2)   Elf")
-            print("3)   Orc")
-            print("4)   Wizard")
-
-            class_input = input("Enter the number or name of a class to make your choice: ").lower()
-
             if class_input in ("1", "human"):
                 self.chosen_class = Human()
                 print(f"You have chosen the human class. Your name is {self.chosen_class.name}!")
@@ -76,12 +75,26 @@ class Game:
                 print(f"Your Health is: {self.chosen_class.health}")
                 print(f"Your Attack Damage is: {self.chosen_class.damage}")
                 valid_choice = True
+            elif class_input in ("5", "exit"):
+                print("Goodbye!")
+                valid_choice = True
+                self.game_over = True
             else:
                 print("Invalid choice. Choose again")
 
+    def game_setup(self):
+        print("Welcome to Battle Game")
+
+        self.display_options()
+        self.make_choice()
+
 def run_game():
     game_obj = Game()
-
     game_obj.game_setup()
+
+    """
+    while not game_over:
+        game_obj.play_game()
+    """
 
 run_game()
