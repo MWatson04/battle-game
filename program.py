@@ -115,8 +115,6 @@ class Game:
             elif elapsed_time == 3.0:
                 print ("1")
             elif elapsed_time >= total_time:
-                print("Coin has been flipped!")
-                print(f"The result is: {self.get_coin_result()}")
                 start_time = time.time() # Reset timer
                 timer_done = True
 
@@ -127,7 +125,15 @@ class Game:
         print(f"Heads means you go first. Tails means {self.enemy.name} goes first.")
         print("")
         print("Coin Flipping...")
+
+        coin_result = self.get_coin_result()
         self.timer()
+        print(f"The result is: {coin_result}")
+
+        if coin_result == "Heads":
+            print("You are attacking first!")
+        if coin_result == "Tails":
+            print(f"{self.enemy.name} is attacking first!")
 
     def game_setup(self):
         print("Welcome to Battle Game")
@@ -135,6 +141,9 @@ class Game:
         self.display_options()
         self.make_choice()
         self.coin_flip()
+
+    def play_game(self):
+        print("")
 
 def run_game():
     game_obj = Game()
