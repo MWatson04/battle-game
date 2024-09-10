@@ -2,6 +2,9 @@
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 
+import time
+import random
+
 class Human:
     def __init__(self, name = "Balder", damage = 75, health = 150):
         self.name = name
@@ -33,9 +36,10 @@ class Dragon(Human):
         super().__init__(name, damage, health)
 
 class Game:
-    def __init__(self, game_over = False, chosen_class = None):
+    def __init__(self, game_over = False, chosen_class = None, enemy = Dragon()):
         self.game_over = game_over
         self.chosen_class = chosen_class
+        self.enemy = enemy
 
     def display_options(self):
         print("")
@@ -82,11 +86,55 @@ class Game:
             else:
                 print("Invalid choice. Choose again")
 
+    def random_num(self):
+        return random.randint(1, 100)
+
+    def get_coin_result(self):
+        num = self.random_num()
+        coin = ""
+
+        if 1 <= num <= 50:
+            coin = "Heads"
+        elif 51 <= num <= 100:
+            coin = "Tails"
+
+        return coin
+
+    def timer(self):
+        total_time = 4
+        timer_done = False
+        start_time = time.time()
+
+        while not timer_done:
+            elapsed_time = time.time() - start_time # Get how much time has passed
+            
+            if elapsed_time == 1.0:
+                print ("3")
+            elif elapsed_time == 2.0:
+                print ("2")
+            elif elapsed_time == 3.0:
+                print ("1")
+            elif elapsed_time >= total_time:
+                print("Coin has been flipped!")
+                print(f"The result is: {self.get_coin_result()}")
+                start_time = time.time() # Reset timer
+                timer_done = True
+
+    def coin_flip(self):
+        print("")
+        print(f"You will now fight the dragon {self.enemy.name}!")
+        print("A coin will now be flipped to determine who goes first!")
+        print(f"Heads means you go first. Tails means {self.enemy.name} goes first.")
+        print("")
+        print("Coin Flipping...")
+        self.timer()
+
     def game_setup(self):
         print("Welcome to Battle Game")
 
         self.display_options()
         self.make_choice()
+        self.coin_flip()
 
 def run_game():
     game_obj = Game()
