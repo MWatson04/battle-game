@@ -7,12 +7,12 @@ import random
 from character import *
 
 class Game:
-    def __init__(self, game_over = False, chosen_class = None, enemy = Dragon(), attack_first = None, winner = None):
-        self.game_over = game_over
-        self.chosen_class = chosen_class
+    def __init__(self, enemy = Dragon()):
+        self.game_over = False
+        self.chosen_class = None
         self.enemy = enemy
-        self.attack_first = attack_first
-        self.winner = winner
+        self.attack_first = None
+        self.winner = None
         self.state_one_over = False
 
     def display_options(self):
