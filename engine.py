@@ -7,13 +7,13 @@ import random
 from character import *
 
 class Game:
-    def __init__(self, game_over = False, state_one_over = False, chosen_class = None, enemy = Dragon(), attack_first = None, winner = None):
+    def __init__(self, game_over = False, chosen_class = None, enemy = Dragon(), attack_first = None, winner = None):
         self.game_over = game_over
-        self.state_one_over = state_one_over
         self.chosen_class = chosen_class
         self.enemy = enemy
         self.attack_first = attack_first
         self.winner = winner
+        self.state_one_over = False
 
     def display_options(self):
         print("Welcome to Battle Game")
@@ -27,9 +27,10 @@ class Game:
 
     def make_choice(self):
         valid_choice = False
-        class_input = input("Enter the number or name of a class to make your choice: ").lower()
     
         while not valid_choice:
+            class_input = input("Enter the number or name of a class to make your choice: ").lower()
+
             if class_input in ("1", "human"):
                 self.chosen_class = Human()
                 print(f"You have chosen the human class. Your name is {self.chosen_class.name}!")
@@ -65,7 +66,6 @@ class Game:
                 self.game_over = True
             else:
                 print("Invalid choice. Choose again")
-                valid_choice = True
 
     def random_num(self):
         return random.randint(1, 100)
@@ -127,7 +127,8 @@ class Game:
             self.make_choice()
 
     def state_transition(self):
-        self.coin_flip()
+        if not self.game_over:
+            self.coin_flip()
 
     def enemy_turn(self):
         print(f"{self.enemy.name} is attacking!")
