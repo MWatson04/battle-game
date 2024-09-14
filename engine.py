@@ -5,6 +5,7 @@
 import time
 import random
 from character import *
+from sys import exit
 
 class Game:
     def __init__(self, enemy = Dragon()):
@@ -13,7 +14,6 @@ class Game:
         self.enemy = enemy
         self.attack_first = None
         self.winner = None
-        self.state_one_over = False
 
     def display_options(self):
         print("Welcome to Battle Game")
@@ -23,7 +23,7 @@ class Game:
         print("2)   Elf")
         print("3)   Orc")
         print("4)   Wizard")
-        print("5    Exit")
+        print("5)   Exit")
 
     def make_choice(self):
         valid_choice = False
@@ -37,33 +37,28 @@ class Game:
                 print(f"Your Health is: {self.chosen_class.health}")
                 print(f"Your Attack Damage is: {self.chosen_class.damage}")
                 valid_choice = True
-                self.state_one_over = True
             elif class_input in ("2", "elf"):
                 self.chosen_class = Elf()
                 print(f"You have chosen the elf class. Your name is {self.chosen_class.name}!")
                 print(f"Your Health is: {self.chosen_class.health}")
                 print(f"Your Attack Damage is: {self.chosen_class.damage}")
                 valid_choice = True
-                self.state_one_over = True
             elif class_input in ("3", "orc"):
                 self.chosen_class = Orc()
                 print(f"You have chosen the orc class. Your name is {self.chosen_class.name}!")
                 print(f"Your Health is: {self.chosen_class.health}")
                 print(f"Your Attack Damage is: {self.chosen_class.damage}")
                 valid_choice = True
-                self.state_one_over = True
             elif class_input in ("4", "wizard"):
                 self.chosen_class = Wizard()
                 print(f"You have chosen the wizard class. Your name is {self.chosen_class.name}!")
                 print(f"Your Health is: {self.chosen_class.health}")
                 print(f"Your Attack Damage is: {self.chosen_class.damage}")
                 valid_choice = True
-                self.state_one_over = True
             elif class_input in ("5", "exit"):
+                print("")
                 print("Goodbye!")
-                valid_choice = True
-                self.state_one_over = True
-                self.game_over = True
+                exit()
             else:
                 print("Invalid choice. Choose again")
 
@@ -122,13 +117,9 @@ class Game:
             self.attack_first = "enemy"
 
     def game_setup(self):
-        while not self.state_one_over:
-            self.display_options()
-            self.make_choice()
-
-    def state_transition(self):
-        if not self.game_over:
-            self.coin_flip()
+        self.display_options()
+        self.make_choice()
+        self.coin_flip()
 
     def enemy_turn(self):
         print(f"{self.enemy.name} is attacking!")

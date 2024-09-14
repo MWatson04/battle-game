@@ -7,7 +7,6 @@ from engine import *
 def run():
     game_obj = Game()
     game_obj.game_setup()
-    game_obj.state_transition()
     game_obj.play_game()
 
 run()
