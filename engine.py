@@ -62,11 +62,8 @@ class Game:
             else:
                 print("Invalid choice. Choose again")
 
-    def random_num(self):
-        return random.randint(1, 100)
-
     def get_coin_result(self):
-        num = self.random_num()
+        num = random.randint(1, 100)
         coin = ""
 
         if 1 <= num <= 50:
